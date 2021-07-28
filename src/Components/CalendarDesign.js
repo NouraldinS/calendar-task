@@ -5,34 +5,25 @@ import { Calendar, Badge, Input } from 'antd';
 import { Modal, Button, DatePicker } from 'antd';
 
 const { RangePicker } = DatePicker;
-
 const CalendarDesign = () => {
   const [title, setTitle] = useState('');
-
   const [isModalVisible, setIsModalVisible] = useState(false);
-
   const showModal = () => {
     setIsModalVisible(true);
   };
-
-
   const handleOk = () => {
     setIsModalVisible(false);
-    alert(title)
+    // alert(title)
   };
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-
   function getListData(value) {
     let listData;
     switch (value.date()) {
       case 8:
         listData = [
-          { type: 'warning', content: 'This is warning event.' },
-          { type: 'success', content: 'This is usual event.' },
+          { type: 'warning', content: `This is warning ${title}` },
         ];
         break;
       case 10:
@@ -73,7 +64,6 @@ const CalendarDesign = () => {
       return 1394;
     }
   }
-
   function monthCellRender(value) {
     const num = getMonthData(value);
     return num ? (
@@ -86,7 +76,6 @@ const CalendarDesign = () => {
   const handlSubmit = (e) => {
     e.preventDefault();
     alert(`tittle of task is ${title}`)
-
   }
   return (
     <>
@@ -94,7 +83,6 @@ const CalendarDesign = () => {
         onChange={showModal}
         dateCellRender={dateCellRender}
         monthCellRender={monthCellRender} />
-
       <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}
         footer={[
           <Button type="submit" onClick={handleOk}>
@@ -103,24 +91,14 @@ const CalendarDesign = () => {
           <Button onClick={handleCancel}>
             Cancel
           </Button>
-
         ]}>
         <form onSubmit={handlSubmit}>
-
-
           <Input onChange={e => setTitle(e.target.value)} type="text" name="title" value={title} />
           <RangePicker
-
           />
-
-
-
         </form>
-
       </Modal>
     </>
-
-
   )
 }
 export default CalendarDesign

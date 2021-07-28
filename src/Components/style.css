@@ -17,3 +17,8 @@
   .notes-month section {
     font-size: 28px;
   }
+  .ant-picker-range {
+    position: relative;
+    display: inline-flex;
+    margin-top: 27px;
+}
