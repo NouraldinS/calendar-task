@@ -1,12 +1,13 @@
-import {React,useState} from 'react';
+import { React, useState } from 'react';
 import 'antd/dist/antd.css';
 import './style.css';
 import { Calendar, Badge, Input } from 'antd';
-import { Modal } from 'antd';
+import { Modal, Button, DatePicker } from 'antd';
 
+const { RangePicker } = DatePicker;
 
 const CalendarDesign = () => {
-  const[title,setTitle] = useState('');
+  const [title, setTitle] = useState('');
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -17,6 +18,7 @@ const CalendarDesign = () => {
 
   const handleOk = () => {
     setIsModalVisible(false);
+    alert(title)
   };
 
   const handleCancel = () => {
@@ -81,8 +83,11 @@ const CalendarDesign = () => {
       </div>
     ) : null;
   }
+  const handlSubmit = (e) => {
+    e.preventDefault();
+    alert(`tittle of task is ${title}`)
 
-
+  }
   return (
     <>
       <Calendar
@@ -90,11 +95,31 @@ const CalendarDesign = () => {
         dateCellRender={dateCellRender}
         monthCellRender={monthCellRender} />
 
-      <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <Input type = "text" name = "title" value = {title}/>
+      <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}
+        footer={[
+          <Button type="submit" onClick={handleOk}>
+            Add Event
+          </Button>,
+          <Button onClick={handleCancel}>
+            Cancel
+          </Button>
+
+        ]}>
+        <form onSubmit={handlSubmit}>
+
+
+          <Input onChange={e => setTitle(e.target.value)} type="text" name="title" value={title} />
+          <RangePicker
+
+          />
+
+
+
+        </form>
 
       </Modal>
     </>
+
 
   )
 }
