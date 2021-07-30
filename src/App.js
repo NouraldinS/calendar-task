@@ -1,9 +1,11 @@
 import CalendarDesign from './Components/CalendarDesign';
+import React from 'react';
 
 function App() {
   return (
     <div className="App">
-<CalendarDesign/>
+      <CalendarDesign
+        name="mohammed" />
     </div>
   );
 }
