@@ -12,8 +12,7 @@ const CalendarDesign = (props) => {
   const [edit, SetEdit] = useState(true)
   const [date, SetDate] = useState('')
   const [id, setId] = useState(1)
-  const [value, SetValue] = useState(moment('2017-01-25'))
-  const [selectValue, SetselectValue] = useState(moment('2017-01-25'))
+ 
   const name = useContext(EventContext)
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
