@@ -1,14 +1,11 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
+import CalendarDesign from './CalendarDesign'
 
-
-export class CalendarEvent extends Component {
-  render() {
+const  CalendarEvent =()=> {  
     return (
-      <div>
-
-      </div>
+        <div>
+          <CalendarDesign username = "mohammed"/>
+        </div>
     )
-  }
 }
-
 export default CalendarEvent
