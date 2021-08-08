@@ -17,7 +17,7 @@ const CalendarDesign = (props) => {
   };
   function changeCellDate(id, newDate) {
     const newEventList = props.eventlist.slice();
-    const eventId = newEventList.findIndex((event) => event.props.id === id);
+    const eventId = newEventList.findIndex((event) => event.id === id);
     newEventList[eventId].date = newDate;
     console.log({ eventId })
     props.oneventChange(newEventList);
