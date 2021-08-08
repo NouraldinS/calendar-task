@@ -1,79 +1,55 @@
 import React, { useState, useContext } from 'react';
 import 'antd/dist/antd.css';
 import './style.css';
-import { useDrag, useDrop, DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { Button, Calendar, Input } from 'antd';
-import { Modal} from 'antd';
-import { EventContext } from './Context';
+import { Modal } from 'antd';
+import DayCell from './DayCell';
 const CalendarDesign = (props) => {
-  var matchDrag = useDrag({
-    type: "FILE"
-  });
-  var matchDrop = useDrop({
-    accept: "FILE",
-    drop: function (item, monitor) {
-      console.log("dropped");
-    }
-  });
   const [title, setTitle] = useState('');
-  const [eventlist, SetEventlist] = useState([])
-  const [date, SetDate] = useState('')
-  const [id, setId] = useState(1)
-  const name = useContext(EventContext)
+  const [date, SetDate] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editmode, setEditmode] = useState(false);
   const showModal = () => {
-      setIsModalVisible(true);     
+    setIsModalVisible(true);
   }
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+  function changeCellDate(id, newDate) {
+    const newEventList = props.eventlist.slice();
+    const eventId = newEventList.findIndex((event) => event.props.id === id);
+    newEventList[eventId].date = newDate;
+    console.log({ eventId })
+    props.oneventChange(newEventList);
+  }
   function dateCellRender(value) {
-    const listData = eventlist;
+    const listData = props.eventlist;
     return (
-      <ul className="event">
-        {listData.map(item => {
-          if (item.date.format('l') === value.format('l')) {
-            return <div onClick = {(e)=>{e.stopPropagation();
-              setTitle(item.title);
-              setEditmode(true);
-              setId(item.id);
-              showModal()
-            }
-            }
-              className="task" >
-              <p  ref={matchDrag[1]}
-              key={item.id}>{item.title}  </p>
-            </div>
-          }
-        })}</ul>
+      <DayCell changeCellDate={changeCellDate} value={value} setTitle={setTitle} setEditmode={setEditmode} showModal={showModal} onidChange={props.onidChange} listData={listData} />
     )
   }
-  const addevent = (event) => {
-    SetEventlist([...eventlist, { event, date, title, id: Math.random() }])
+  const addEvent = (event) => {
+    props.oneventChange([...props.eventlist, { event, date, title, id: Math.random() }])
   }
   const updateEvent = () => {
-    const index = eventlist.findIndex(item => item.id === id);
-    const eventsUpdate = [...eventlist];
-    eventlist[index].title = title;
+    const index = props.eventlist.findIndex(item => item.id === props.id);
+    const eventsUpdate = [...props.eventlist];
+    props.eventlist[index].title = title;
   }
-  const Handlesubmit = (event) => {
+  const handleSubmit = (event) => {
     if (editmode) {
       updateEvent();
     } else {
-      addevent(event)
+      addEvent(event)
     }
     setIsModalVisible(false);
-    // console.log({ eventlist });
   }
-  const DeleteEvent = id => {
-    const index = eventlist.findIndex(item => item.id === id);
-    eventlist.splice(index, 1);
+  const deleteEvent = id => {
+    const index = props.eventlist.findIndex(item => item.id === id);
+    props.eventlist.splice(index, 1);
     setIsModalVisible(false);
   }
-  const HandleSelect = (date) => {
-    // console.log({ date });
+  const handleSelect = (date) => {
     SetDate(date)
     setEditmode(false);
     setTitle("");
@@ -83,15 +59,15 @@ const CalendarDesign = (props) => {
     <>
       <Calendar
         dateCellRender={dateCellRender}
-        onSelect={HandleSelect}
+        onSelect={handleSelect}
       />
       <Modal
-        footer={editmode?[
-          <Button onClick={Handlesubmit} key="1">Update Event</Button>,
-          <Button onClick={() => DeleteEvent(id)} key="4"> Delete </Button>,
+        footer={editmode ? [
+          <Button onClick={handleSubmit} key="1">Update Event</Button>,
+          <Button onClick={() => deleteEvent(props.id)} key="4"> Delete </Button>,
           <Button onClick={handleCancel} key="2"> Cancel</Button>,
-        ]:[
-          <Button onClick={Handlesubmit} key="1">Add Event</Button>,
+        ] : [
+          <Button onClick={handleSubmit} key="1">Add Event</Button>,
           <Button onClick={handleCancel} key="2"> Cancel</Button>
         ]}
         title="Basic Modal"
@@ -99,8 +75,7 @@ const CalendarDesign = (props) => {
         okType="primary">
         <Input onChange={e => setTitle(e.target.value)} type="text" name="title" value={title} />
       </Modal>
-    </>    
+    </>
   )
 }
 export default CalendarDesign
-
