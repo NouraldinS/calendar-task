@@ -1,15 +1,15 @@
 import { useDrop } from 'react-dnd';
 import EventItem from './EventItem'
-function DayCell({ changeCellDate, listData, setEditmode, showModal, setTitle, onidChange, value }) {
+function DayCell(props) {
     const [collectedProps, drop] = useDrop(() => ({
         accept: "event", canDrop: () => true, drop: (item) => {
-            changeCellDate(item.id, value);
+            props.changeCellDate(item.id, props.value);
         }
-    }));
+    }),[props.listData]);
     return (<div className="event" ref={drop} style={{ height: "100%" }}  >
-        {listData.map(item => {
-            if (item.date.format('l') === value.format('l')) {
-                return <EventItem id={item.id} item={item} setEditmode={setEditmode} showModal={showModal} setTitle={setTitle} onidChange={onidChange} />
+        {props.listData.map(item => {
+            if (item.date.format('l') === props.value.format('l')) {
+                return <EventItem id={item.id} item={item} setEditmode={props.setEditmode} showModal={props.showModal} setTitle={props.setTitle} onidChange={props.onidChange} />
             }
         })}</div>
     )
